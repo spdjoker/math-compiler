@@ -10,6 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS True)
 add_executable(solve 
   src/main.cpp
   src/Analysis/Lexer.hpp
+  src/Analysis/Lexer.cpp
   src/Analysis/SymbolTable.hpp
   src/Analysis/SymbolTable.cpp
   )

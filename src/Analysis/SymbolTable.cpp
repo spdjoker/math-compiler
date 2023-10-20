@@ -5,7 +5,8 @@
 #include <unordered_map>
 #include <utility>
 
-using hashmap = std::unordered_map<std::string, float>;
+using symbol_map = std::unordered_map<std::string, int>;
+using value_map = std::unordered_map<int, float>;
 
 SymbolTable::SymbolTable()
   : symbols()
@@ -17,12 +18,14 @@ SymbolTable::SymbolTable(SymbolTable *parent)
   , parent(parent)
   , count(parent->count) {}
 
-bool SymbolTable::insert(const std::string &key) {
-  std::pair<hashmap::iterator, bool> p;
+bool SymbolTable::insert(const std::string &key, int* id) {
+  std::pair<symbol_map::iterator, bool> p;
 
-  p = symbols.insert({key, 0.0f});
+  p = symbols.insert({key, count});
 
   if (p.second) {
+    values.insert({count, 0.0f});
+    *id = count;
     count += 1;
     return true;
   }
@@ -30,15 +33,15 @@ bool SymbolTable::insert(const std::string &key) {
   return false;
 }
 
-bool SymbolTable::find(const std::string &key, float **value) {
-  hashmap::iterator it = symbols.find(key);
+bool SymbolTable::find(const std::string &key, float** value) {
+  symbol_map::iterator it = symbols.find(key);
   if (it == symbols.end()) {
     if (parent) {
       return parent->find(key, value);
     }
     return false;
   }
-  *value = &it->second;
+  *value = &values.find(it->second)->second;
   return true;
 }
 
@@ -53,17 +56,20 @@ void SymbolTable::printData() {
     std::cout << "------------------------------------------------------------------------\n";
   }
 
-  hashmap::iterator it = symbols.begin();
-  
+  symbol_map::iterator it = symbols.begin();
+
   while (it != symbols.end()) {
-    std::cout << std::left << std::setw(32) << it->first << std::setw(16) << std::setprecision(8) << it->second << '\n';
+    std::cout << std::left 
+      << std::setw(8) << it->second 
+      << std::setw(32) << it->first 
+      << std::setw(16) << std::setprecision(8) << values.find(it->second)->second << '\n';
     it++;
   }
 }
 
 void SymbolTable::print() {
   std::cout << "========================================================================\n";
-  std::cout << std::left << std::setw(32) << "identifier" << std::setw(16) << "value" << std::endl;
+  std::cout << std::left << std::setw(8) << "id" << std::setw(32) << "name" << std::setw(16) << "value" << std::endl;
   std::cout << "========================================================================\n";
   printData();
   std::cout << "========================================================================\n";

@@ -5,7 +5,8 @@
 #include <string>
 
 class SymbolTable {
-  std::unordered_map<std::string, float> symbols;
+  std::unordered_map<std::string, int> symbols;
+  std::unordered_map<int, float> values;
   SymbolTable *parent;
   unsigned int count;
 
@@ -15,8 +16,8 @@ public:
   SymbolTable();
   SymbolTable(SymbolTable *parent);
 
-  bool insert(const std::string& key);
-  bool find(const std::string& key, float **value);
+  bool insert(const std::string& key, int* id);
+  bool find(const std::string& key, float** value);
   
   constexpr int size();
 
