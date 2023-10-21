@@ -5,9 +5,6 @@
 #include <unordered_map>
 #include <utility>
 
-using symbol_map = std::unordered_map<std::string, int>;
-using value_map = std::unordered_map<int, float>;
-
 SymbolTable::SymbolTable()
   : symbols()
   , parent(nullptr)
@@ -18,31 +15,35 @@ SymbolTable::SymbolTable(SymbolTable *parent)
   , parent(parent)
   , count(parent->count) {}
 
+// Inserts a new variable into the local scope Symbol Table
 bool SymbolTable::insert(const std::string &key, int* id) {
-  std::pair<symbol_map::iterator, bool> p;
-
-  p = symbols.insert({key, count});
+  auto p = symbols.insert({key, count});
 
   if (p.second) {
-    values.insert({count, 0.0f});
+    auto d = values.insert({count, SymbolEntry::Data(key, count)});
     *id = count;
     count += 1;
     return true;
   }
-
+  *id = p.first->second;
   return false;
 }
 
-bool SymbolTable::find(const std::string &key, float** value) {
+// Finds the variable if it is defined locally, or the scope above recursively
+SymbolEntry SymbolTable::find(const std::string &key) {
   symbol_map::iterator it = symbols.find(key);
+
+  // If the key is not in this scope.
   if (it == symbols.end()) {
+    // Check in parent scope if it exists
     if (parent) {
-      return parent->find(key, value);
+      return parent->find(key);
     }
-    return false;
+    // Otherwise there is none, return an empty entry
+    return SymbolEntry();
   }
-  *value = &values.find(it->second)->second;
-  return true;
+  // Otherwise return the entry
+  return SymbolEntry(&(*values.find(it->second)).second, true);
 }
 
 constexpr int SymbolTable::size() {
@@ -50,26 +51,25 @@ constexpr int SymbolTable::size() {
 }
 
 void SymbolTable::printData() {
-  if (parent) {
-    std::cout << "------------------------------------------------------------------------\n";
-    parent->print();
-    std::cout << "------------------------------------------------------------------------\n";
-  }
+  entry_map::iterator it = values.begin();
 
-  symbol_map::iterator it = symbols.begin();
-
-  while (it != symbols.end()) {
-    std::cout << std::left 
-      << std::setw(8) << it->second 
-      << std::setw(32) << it->first 
-      << std::setw(16) << std::setprecision(8) << values.find(it->second)->second << '\n';
+  while (it != values.end()) {
+    std::cout << std::left << " " 
+      << std::setw(7) << it->second.id << "| \e[33m" 
+      << std::setw(32) << it->second.name << "\e[0m| "
+      << std::setw(5) << (it->second.init ? "\e[32mINIT" : "\e[31mNULL") << "\e[0m | "
+      << std::setw(16) << std::setprecision(8) << it->second.value << "\n";
     it++;
   }
 }
 
 void SymbolTable::print() {
   std::cout << "========================================================================\n";
-  std::cout << std::left << std::setw(8) << "id" << std::setw(32) << "name" << std::setw(16) << "value" << std::endl;
+    std::cout << std::left 
+    << std::setw(8) << " ID" 
+    << std::setw(34) << "| Variable Name" 
+    << std::setw(7) << "| Case"
+    << std::setw(16) << "| Value" << '\n';
   std::cout << "========================================================================\n";
   printData();
   std::cout << "========================================================================\n";
