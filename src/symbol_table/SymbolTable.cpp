@@ -1,4 +1,5 @@
 #include "SymbolTable.hpp"
+
 #include <iomanip>
 #include <iostream>
 #include <string>

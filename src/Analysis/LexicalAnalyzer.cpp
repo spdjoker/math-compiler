@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <string>
 
+#include "symbol_table/SymbolTable.hpp"
+
 LexicalAnalyzer::LexicalAnalyzer(SymbolTable& root_table) : tokens(), symbols(root_table) {}
 
 void LexicalAnalyzer::tokenize(const std::string& filename) {
@@ -199,10 +201,10 @@ void LexicalAnalyzer::print() {
   for (Token& t : tokens) {
     switch (t.type()) {
       case Type::IDENTIFIER:
-        printf("<%s%s%s, %d", FG_MAGENTA, t.typeName(), FG_RESET, t.valueAs<int>());
+        printf("<%s%s%s, %d", FG_MAGENTA, t.typeName(), FG_RESET, t.asInt());
         break;
       case Type::FLOAT_LITERAL:
-        printf("<%s%s%s, %.4ff", FG_CYAN, t.typeName(), FG_RESET, t.valueAs<float>());
+        printf("<%s%s%s, %.4ff", FG_CYAN, t.typeName(), FG_RESET, t.asFloat());
         break;
       case Type::OP_TERMINATOR:
       case Type::OP_ASSIGNMENT:

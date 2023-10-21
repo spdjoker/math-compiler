@@ -3,7 +3,7 @@
 
 #include <unordered_map>
 
-#include "types/SymbolEntry.hpp"
+#include "SymbolEntry.hpp"
 
 using symbol_map = std::unordered_map<std::string, int>;
 using entry_map = std::unordered_map<int, SymbolEntry::Data>;

@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "SymbolTable.hpp"
 #include "types/Token.hpp"
 
 constexpr char CHAR_OP_TERMINATOR     = ';';
@@ -14,6 +13,8 @@ constexpr char CHAR_OP_SUBTRACTION    = '-';
 constexpr char CHAR_OP_MULTIPLICATION = '*';
 constexpr char CHAR_OP_DIVISION       = '/';
 constexpr char CHAR_OP_MODULO         = '%';
+
+struct SymbolTable;
 
 struct LexicalAnalyzer {
   std::vector<Token> tokens;

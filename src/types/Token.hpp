@@ -1,9 +1,6 @@
 #ifndef MATH_TOKEN_HPP
 #define MATH_TOKEN_HPP
 
-#include <any>
-#include "types/SymbolEntry.hpp"
-
 enum class Type {
   IDENTIFIER,
   FLOAT_LITERAL,
@@ -18,24 +15,23 @@ enum class Type {
   COUNT // LEAVE AS LAST
 };
 
-
 struct Token {
 private:
   Type m_type;
-  std::any m_value;
+  void* m_value;
   int m_line;
   int m_column;
 
 public:
   Token(Type type, float value, int line, int columnStart) : 
-    m_type(type), m_value(value), m_line(line), m_column(columnStart) {}
+    m_type(type), m_value(new float(value)), m_line(line), m_column(columnStart) {}
   Token(Type type, int value, int line, int columnStart) : 
-    m_type(type), m_value(value), m_line(line), m_column(columnStart) {}
+    m_type(type), m_value(new int(value)), m_line(line), m_column(columnStart) {}
   Token(Type type, int line, int columnStart) : 
-    m_type(type), m_value(), m_line(line), m_column(columnStart) {}
+    m_type(type), m_value(nullptr), m_line(line), m_column(columnStart) {}
   
-  template <typename T>
-  T valueAs() { return any_cast<T>(m_value); }
+  float& asFloat() { return *((float*)m_value); }
+  int& asInt() { return *((int*)m_value); }
   Type type() const { return m_type; }
   int line() const { return m_line; }
   int column() const { return m_column; }

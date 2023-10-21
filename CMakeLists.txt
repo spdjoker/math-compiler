@@ -15,11 +15,11 @@ add_executable(solve
   # First Phase (Analysis)
   src/analysis/LexicalAnalyzer.cpp
   src/analysis/LexicalAnalyzer.hpp
-  src/analysis/SymbolTable.cpp
-  src/analysis/SymbolTable.hpp
+  src/symbol_table/SymbolTable.cpp
+  src/symbol_table/SymbolTable.hpp
+  src/symbol_table/SymbolEntry.hpp
 
   # Intermediate Types
   src/types/Token.hpp
-  src/types/SymbolEntry.hpp
   )
 

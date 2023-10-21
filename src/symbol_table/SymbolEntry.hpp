@@ -10,12 +10,13 @@ struct SymbolEntry {
     const int id;
     bool init;
 
-  Data(const std::string& key, int id) : name(key), value(0.0f), id(id), init(false) {}
+    Data(const std::string& key, int id) : name(key), value(0.0f), id(id) {} 
   };
 
-private:
-  Data* m_data;
+private: 
+  Data* m_data; 
   bool m_success;
+
 public:
 
   SymbolEntry(Data* data, bool success) : m_data(data), m_success(success) {} 
