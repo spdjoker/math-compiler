@@ -15,6 +15,8 @@ add_executable(solve
   # First Phase (Analysis)
   src/analysis/LexicalAnalyzer.cpp
   src/analysis/LexicalAnalyzer.hpp
+
+  # Symbol Table
   src/symbol_table/SymbolTable.cpp
   src/symbol_table/SymbolTable.hpp
   src/symbol_table/SymbolEntry.hpp
