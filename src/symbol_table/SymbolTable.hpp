@@ -5,28 +5,30 @@
 
 #include "SymbolEntry.hpp"
 
-using symbol_map = std::unordered_map<std::string, int>;
-using entry_map = std::unordered_map<int, SymbolEntry::Data>;
+namespace compiler
+{
+	using symbol_map = std::unordered_map<std::string, int>;
+	using entry_map = std::unordered_map<int, SymbolEntry::Data>;
 
-struct SymbolTable {
-  SymbolTable(SymbolTable *parent);
-  SymbolTable();
+	struct SymbolTable {
+		SymbolTable(SymbolTable *parent);
+		SymbolTable();
 
-  bool insert(const std::string& key, int* id);
-  SymbolEntry find(const std::string& key);
+		constexpr int size();
+		SymbolEntry find(const std::string& key);
+		bool insert(const std::string& key, int* id);
+		void print();
 
-  constexpr int size();
+	private:
+		SymbolTable *parent;
+		unsigned int count;
 
-  void print();
+		symbol_map symbols;
+		entry_map values;
 
-private:
-  SymbolTable *parent;
-  unsigned int count;
+		void printData();
+	};
 
-  symbol_map symbols;
-  entry_map values;
-
-  void printData();
-};
+}
 
 #endif

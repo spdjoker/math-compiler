@@ -6,6 +6,10 @@
 #include <unordered_map>
 #include <utility>
 
+using namespace compiler;
+
+using SymbolTable = compiler::SymbolTable;
+
 SymbolTable::SymbolTable()
   : symbols()
   , parent(nullptr)

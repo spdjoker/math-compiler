@@ -8,6 +8,10 @@
 
 #include "symbol_table/SymbolTable.hpp"
 
+using namespace compiler;
+
+using LexicalAnalyzer = compiler::LexicalAnalyzer;
+
 LexicalAnalyzer::LexicalAnalyzer(SymbolTable& root_table) : tokens(), symbols(root_table) {}
 
 void LexicalAnalyzer::tokenize(const std::string& filename) {
