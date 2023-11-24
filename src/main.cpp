@@ -5,24 +5,12 @@
 #include "symbol_table/SymbolTable.hpp"
 
 using string = std::string;
+using namespace compiler;
 
 constexpr int FLAG_PRINT_SYMBOL_TABLE = 1;
 constexpr int FLAG_PRINT_TOKENS = 2;
 
-void check(void* chunk1, void* chunk2) {
-  std::cout << *((float*)chunk1) << ' ' << *((float*)chunk2) << '\n';
-}
-
 int main(int argc, char** argv) {
-  
-  void* chunk1 = new float(argc);
-  void* chunk2 = malloc(sizeof(float));
-  // float* fp1 = (float*)chunk1;
-  float* fp2 = (float*)chunk2;
-  // *fp1 = 2;
-  *fp2 = 5;
-  check(chunk1, chunk2);
-
   if (argc == 1) {
     std::cout << "\033[31mMissing required argument <filename0>\nUsage: " << argv[0] << "[-t] [-s] <filename0> [filename1...]\e[0m\n";
     return -1;
@@ -73,8 +61,8 @@ int main(int argc, char** argv) {
     return -1;
   }
   
-  SymbolTable rootScope;
-  LexicalAnalyzer lexer(rootScope);
+	compiler::SymbolTable rootScope;
+	compiler::LexicalAnalyzer lexer(rootScope);
   lexer.tokenize(filenames[0]);
   
   if (flags & FLAG_PRINT_SYMBOL_TABLE) {

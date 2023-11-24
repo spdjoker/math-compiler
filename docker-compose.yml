@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  build-cpp:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    tty: true
+    volumes:
+      - ./:/build
